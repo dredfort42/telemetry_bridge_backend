@@ -55,7 +55,9 @@ func main() {
 		Port: operationPort,
 	}
 
-	addr := &net.UDPAddr{IP: net.ParseIP(info.IP), Port: broadcastPort}
+	broadcastNet := "255.255.255.255"
+
+	addr := &net.UDPAddr{IP: net.ParseIP(broadcastNet), Port: broadcastPort}
 	b := Broadcaster{Addr: addr, Info: info}
 	if err := b.Start(2 * time.Second); err != nil {
 		os.Exit(1)
