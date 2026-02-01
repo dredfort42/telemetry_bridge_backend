@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+const serverType = "TelemetryBridge"
 const broadcastPort = 9999
 const operationPort = 8888
 
@@ -50,7 +51,7 @@ func main() {
 	}
 
 	info := ServerInfo{
-		Type: "TelemetryBridge",
+		Type: serverType,
 		IP:   serverIP,
 		Port: operationPort,
 	}
