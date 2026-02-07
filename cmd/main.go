@@ -83,6 +83,22 @@ func main() {
 		c.JSON(200, gin.H{"status": "registered", "data": body})
 	})
 
+	router.POST("/data", func(c *gin.Context) {
+		// 	  json["mac"] = WiFi.macAddress();
+		// json["temperature_c"] = temperature;
+		// json["humidity_percent"] = humidity;
+		// json["timestamp"] = millis();
+		body := make(map[string]any)
+		if err := c.BindJSON(&body); err != nil {
+			c.JSON(400, gin.H{"error": "invalid JSON"})
+			return
+		}
+
+		log.Printf("Received registration: %v", body)
+
+		c.JSON(200, gin.H{"status": "OK", "data": body})
+	})
+
 	if err := router.Run(fmt.Sprintf(":%d", operationPort)); err != nil {
 		os.Exit(1)
 	}
