@@ -94,7 +94,8 @@ func main() {
 			return
 		}
 
-		log.Printf("Received registration: %v", body)
+		log.Printf("Received data: %v", body)
+		log.Printf("Timestamp: %v", int64(body["timestamp"].(float64)))
 
 		c.JSON(200, gin.H{"status": "OK", "data": body})
 	})
