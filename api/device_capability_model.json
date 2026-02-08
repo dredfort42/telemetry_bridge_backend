@@ -2,7 +2,8 @@
     "device_info": {
         "vendor": "dredfort42",
         "model": "iot-ctrl-v0",
-        "fw_version": "1.2.3"
+        "farmvare": "1.2.3",
+        "mac": "00:1A:7D:DA:71:13"
     },
     "capabilities": {
         "sensors": [
@@ -13,6 +14,20 @@
                 "range": [
                     -40,
                     125
+                ],
+                "read_only": true,
+                "sampling_modes": [
+                    "push",
+                    "pull"
+                ]
+            },
+            {
+                "id": "hum_1",
+                "type": "humidity",
+                "unit": "percent",
+                "range": [
+                    0,
+                    100
                 ],
                 "read_only": true,
                 "sampling_modes": [
