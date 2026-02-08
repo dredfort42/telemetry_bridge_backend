@@ -3,6 +3,8 @@
         "vendor": "dredfort42",
         "model": "iot-ctrl-v0",
         "farmvare": "1.2.3",
+        "ip": "192.168.1.100",
+        "port": 8080,
         "mac": "00:1A:7D:DA:71:13"
     },
     "capabilities": {
