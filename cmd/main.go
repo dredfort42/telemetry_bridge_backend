@@ -95,7 +95,7 @@ func main() {
 		}
 
 		log.Printf("Received data: %v", body)
-		log.Printf("Timestamp: %v", int64(body["timestamp"].(float64)))
+		// log.Printf("Timestamp: %v", int64(body["timestamp"].(float64)))
 
 		c.JSON(200, gin.H{"status": "OK", "data": body})
 	})
