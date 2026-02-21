@@ -1,0 +1,21 @@
+digest:
+  network: 255.255.255.255
+  port: 8888
+
+server:
+  service_type: TelemetryBridge
+  port: 8080
+
+# dbConfig:
+#   host: db-host
+#   username: admin
+#   password: admin_pwd
+
+security:
+  sslEnabled: true
+  # truststoreLocation: ./keystore
+  # truststorePassword: changeit
+  public_cert_url: /certs
+
+general:
+  logLevel: INFO
