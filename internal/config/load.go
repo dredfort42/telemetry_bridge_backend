@@ -12,61 +12,29 @@ import (
 // ServiceConfig is a struct for streams server configuration
 type ServiceConfig struct {
 	Host           string
-	APIPort           int
-	DigestPort	  int
+	Port           int
 	ReadTimeout    time.Duration
 	WriteTimeout   time.Duration
 	IdleTimeout    time.Duration
 	MaxHeaderBytes int
 }
 
-// KafkaConfig is a struct for Kafka configuration
-type KafkaConfig struct {
-	Brokers           []string
-	TopicSystemDigest string
-	TopicSensorData   string
-	ConsumerConfig    map[string]any
-	ProducerConfig    map[string]any
-}
-
-// // RedisConfig is a struct for Redis configuration
-// type RedisConfig struct {
-// 	Host            string
-// 	Port            int
-// 	User            string
-// 	Password        string
-// 	DB              int
-// 	PoolSize        int
-// 	MinIdleConns    int
-// 	MaxConnAge      time.Duration
-// 	IdleTimeout     time.Duration
-// 	PoolTimeout     time.Duration
-// 	DialTimeout     time.Duration
-// 	ReadTimeout     time.Duration
-// 	WriteTimeout    time.Duration
-// 	MaxRetries      int
-// 	MaxRetryBackoff time.Duration
-// }
-
-type PublicURLs struct {
-	Register string
-	Data     string
+// DigesterConfig is a struct for digester configuration
+type DigesterConfig struct {
+	BroadcastInterval time.Duration
+	BroadcastAddress  string
+	BroadcastPort     int
 }
 
 // AppConfig represents complete application configuration
 type AppConfig struct {
-	UUID              string
-	AppName           string
-	Version           string
-	Environment       string
-	HeartbeatInterval time.Duration
-	JWTSecret         string
-	Debug             bool
-	Service           ServiceConfig
-	// Database          DatabaseConfig
-	Kafka KafkaConfig
-	// Redis             RedisConfig
-	PublicURLs PublicURLs
+	UUID        string
+	AppName     string
+	Version     string
+	Environment string
+	Debug       bool
+	Service     ServiceConfig
+	Digester    DigesterConfig
 }
 
 // App is the global application configuration
@@ -82,8 +50,7 @@ func Init(ctx context.Context, configPath string) error {
 
 	// Define comprehensive defaults
 	defaults := map[string]any{
-		"debug":              false,
-		"heartbeat_interval": 10 * time.Second,
+		"debug": false,
 
 		"service.host":             "localhost",
 		"service.port":             8080,
@@ -91,50 +58,30 @@ func Init(ctx context.Context, configPath string) error {
 		"service.write_timeout":    "30s",
 		"service.idle_timeout":     "120s",
 		"service.max_header_bytes": 1048576, // 1MB
+
+		"digester.broadcast_interval": "10s",
+		"digester.broadcast_address":  "255.255.255.255",
+		"digester.broadcast_port":     8888,
 	}
 
 	// Try to load from config file with defaults and validation
 	opts := &config.LoadOptions{
 		DefaultValues: defaults,
-		RequiredKeys: []string{
-			"jwt_secret",
-
-			"database.host",
-			"database.port",
-			"database.name",
-			"database.user",
-			"database.password",
-
-			"kafka.brokers",
-			"kafka.topic_system_digest",
-			"kafka.topic_sensor_data",
-
-			"redis.host",
-			"redis.port",
-			"redis.password",
-			"redis.db",
-		},
+		RequiredKeys:  []string{},
 		ValidationFunc: func(data map[string]any) error {
-			// Validate port range
+			// Validate service port range
 			if port, ok := data["service.port"].(int); ok {
 				if port < 1024 || port > 65535 {
 					return fmt.Errorf("service port must be between 1 and 65535, got %d", port)
 				}
 			}
 
-			// // Validate database port
-			// if dbPort, ok := data["database.port"].(int); ok {
-			// 	if dbPort < 1024 || dbPort > 65535 {
-			// 		return fmt.Errorf("database port must be between 1 and 65535, got %d", dbPort)
-			// 	}
-			// }
-
-			// // Validate Redis port
-			// if redisPort, ok := data["redis.port"].(int); ok {
-			// 	if redisPort < 1024 || redisPort > 65535 {
-			// 		return fmt.Errorf("redis port must be between 1 and 65535, got %d", redisPort)
-			// 	}
-			// }
+			// Validate digester port range
+			if port, ok := data["digester.broadcast_port"].(int); ok {
+				if port < 1024 || port > 65535 {
+					return fmt.Errorf("digester broadcast port must be between 1 and 65535, got %d", port)
+				}
+			}
 
 			return nil
 		},
