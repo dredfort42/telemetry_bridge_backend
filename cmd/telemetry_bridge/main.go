@@ -10,12 +10,12 @@ import (
 )
 
 func main() {
-	config, err := config.New()
+	config, err := config.Init()
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 
-	if err := digest.New(config, )
+	// if err := digest.New(config, )
 
 	router := gin.Default()
 	router.POST("/register", func(c *gin.Context) {

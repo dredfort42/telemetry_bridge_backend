@@ -12,33 +12,13 @@ import (
 // ServiceConfig is a struct for streams server configuration
 type ServiceConfig struct {
 	Host           string
-	Port           int
+	APIPort           int
+	DigestPort	  int
 	ReadTimeout    time.Duration
 	WriteTimeout   time.Duration
 	IdleTimeout    time.Duration
 	MaxHeaderBytes int
-	// SSLEnabled                bool
-	// SSLCertFile               string
-	// SSLKeyFile                string
-	// JWTAccessTokenExpiration  time.Duration
-	// JWTRefreshTokenExpiration time.Duration
 }
-
-// // DatabaseConfig represents database configuration
-// type DatabaseConfig struct {
-// 	Driver         string
-// 	Host           string
-// 	Port           int
-// 	Name           string
-// 	User           string
-// 	Password       string
-// 	SSLEnabled     bool
-// 	MigrationsPath string
-// 	MaxOpenConn    int
-// 	MaxIdleConn    int
-// 	MaxLifetime    time.Duration
-// 	MaxIdleTime    time.Duration
-// }
 
 // KafkaConfig is a struct for Kafka configuration
 type KafkaConfig struct {
@@ -111,33 +91,6 @@ func Init(ctx context.Context, configPath string) error {
 		"service.write_timeout":    "30s",
 		"service.idle_timeout":     "120s",
 		"service.max_header_bytes": 1048576, // 1MB
-		// "service.ssl_enabled":                  false,
-		// "service.ssl_cert_file":                "",
-		// "service.ssl_key_file":                 "",
-		// "service.jwt_access_token_expiration":  "15m",
-		// "service.jwt_refresh_token_expiration": "7d",
-
-		// "database.driver":          "postgres",
-		// "database.ssl_enabled":     false,
-		// "database.migrations_path": "migrations",
-		// "database.max_open_conn":   25,
-		// "database.max_idle_conn":   5,
-		// "database.max_lifetime":    "5m",
-		// "database.max_idle_time":   "2m",
-
-		"kafka.consumer_config": map[string]any{"auto.offset.reset": "latest"},
-		"kafka.producer_config": map[string]any{"acks": "all"},
-
-		// "redis.pool_size":         100,
-		// "redis.min_idle_conns":    10,
-		// "redis.max_conn_age":      "15m",
-		// "redis.idle_timeout":      "5m",
-		// "redis.pool_timeout":      "30s",
-		// "redis.dial_timeout":      "5s",
-		// "redis.read_timeout":      "5s",
-		// "redis.write_timeout":     "5s",
-		// "redis.max_retries":       3,
-		// "redis.max_retry_backoff": "100ms",
 	}
 
 	// Try to load from config file with defaults and validation
