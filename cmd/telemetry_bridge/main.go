@@ -9,6 +9,7 @@ import (
 	"sync"
 	"syscall"
 	"telemetry_bridge/internal/config"
+	"telemetry_bridge/internal/digester"
 
 	log "github.com/dredfort42/go_logger"
 )
@@ -58,10 +59,13 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-
+	d := digester.New(ctx, cancel)
 	wg.Add(1)
 	go func() {
-		defer wg.Done()
+		if err := d.Start(&wg); err != nil {
+			log.Error.Println("Digester failed:", err)
+			cancel()
+		}
 	}()
 
 	wg.Wait()
