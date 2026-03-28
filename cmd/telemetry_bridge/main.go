@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"telemetry_bridge/internal/config"
 	"telemetry_bridge/internal/digester"
+	"telemetry_bridge/internal/router"
 
 	log "github.com/dredfort42/go_logger"
 )
@@ -68,9 +69,19 @@ func main() {
 		}
 	}()
 
-	wg.Wait()
+	if err := router.Init(cancel); err != nil {
+		log.Error.Println("Router initialization failed:", err)
+		cancel()
+	}
+	defer router.Close()
 
-	// if err := digest.New(config, )
+	log.Info.Printf("%s version %s started successfully", AppName, Version)
+
+	<-ctx.Done()
+	log.Warning.Println("Termination signal received")
+	log.Info.Printf("%s version %s is stopping...", AppName, Version)
+
+	wg.Wait()
 
 	// router := gin.Default()
 	// router.POST("/register", func(c *gin.Context) {
