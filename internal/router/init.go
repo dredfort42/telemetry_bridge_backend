@@ -54,6 +54,8 @@ func Init(cancel context.CancelFunc) error {
 		privateGroup.GET("/p-ping", func(c *gin.Context) {
 			c.String(http.StatusOK, "p-pong")
 		})
+
+		privateGroup.POST("/register", handler.RegisterDevice())
 	}
 
 	// Configure server

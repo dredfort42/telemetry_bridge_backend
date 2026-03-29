@@ -37,10 +37,10 @@ func New(ctx context.Context, cancel context.CancelFunc) *Digester {
 		}
 	}
 
-	if config.App.Service.Host != "localhost" &&
-		config.App.Service.Host != "127.0.0.1" &&
-		config.App.Service.Host != "0.0.0.0" {
-		LANIP = config.App.Service.Host
+	if config.App.Service.Host == "localhost" ||
+		config.App.Service.Host == "127.0.0.1" ||
+		config.App.Service.Host == "0.0.0.0" {
+		config.App.Service.Host = LANIP
 	}
 
 	return &Digester{
@@ -53,8 +53,8 @@ func New(ctx context.Context, cancel context.CancelFunc) *Digester {
 }
 
 func (d *Digester) Start(wg *sync.WaitGroup) error {
-	log.Info.Printf("Starting digester")       // Debug log for IP and port
-	defer log.Info.Println("Digester stopped") // Ensure this is logged when the function exits
+	log.Info.Printf("Digester starting on %s:%d", d.IP, d.Port) // Debug log for IP and port
+	defer log.Info.Println("Digester stopped")                  // Ensure this is logged when the function exits
 	defer wg.Done()
 
 	conn, err := net.DialUDP(
@@ -84,6 +84,7 @@ func (d *Digester) Start(wg *sync.WaitGroup) error {
 			return nil
 		case <-ticker.C:
 			conn.Write(data)
+			log.Debug.Printf("Broadcasted digester info: %s", string(data)) // Debug log for broadcasted data
 		}
 	}
 }
