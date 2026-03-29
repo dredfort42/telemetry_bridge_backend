@@ -17,6 +17,8 @@
                     -40,
                     125
                 ],
+                "resolution": 0.1,
+                "min_delay": 60,
                 "read_only": true,
                 "sampling_modes": [
                     "push",
@@ -31,6 +33,8 @@
                     0,
                     100
                 ],
+                "resolution": 0.1,
+                "min_delay": 60,
                 "read_only": true,
                 "sampling_modes": [
                     "push",

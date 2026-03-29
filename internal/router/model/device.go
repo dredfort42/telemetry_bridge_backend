@@ -24,6 +24,8 @@ type DeviceSensor struct {
 	Type          string     `json:"type"`           // e.g., "temperature", "humidity", "pressure"
 	Unit          string     `json:"unit"`           // e.g., "°C", "%", "hPa"
 	Range         [2]float64 `json:"range"`          // [min, max] values the sensor can measure
+	Resolution    float64    `json:"resolution"`     // Smallest change the sensor can detect
+	MinDelay      int        `json:"min_delay"`      // Minimum delay between measurements in milliseconds
 	ReadOnly      bool       `json:"read_only"`      // Indicates if the sensor is read-only or can be configured
 	SamplingModes []string   `json:"sampling_modes"` // e.g., ["push", "pull"]
 }
